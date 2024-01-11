@@ -15,7 +15,7 @@ function main() {
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    var point_set = new Int16Array([
+    var point_set = new Int16Array([ // change to wanted pointset
         2,4,1,3
     ]);
     var n=point_set.length;
