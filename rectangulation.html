@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #canvas-container {
+            width: 512 px;
+            height: 512 px;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .button-row {
+            left: 100 px;
+            margin-top: 10px;
+        }
+
+        .button-1{
+            margin-right:15px;
+        }
+        .button-2{
+            margin-right:23px;
+        }
+        .button-3{
+            margin-right:97px;
+        }
+    </style>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+
+        void
+        main()
+        {
+            gl_Position = vPosition;
+            gl_PointSize = 15.0;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+
+        void
+        main()
+        {
+            gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+        }
+    </script>
+    <script type="text/javascript" src="../Common/MV.js"></script>
+    <script type="text/javascript" src="../Common/MV2.js"></script>
+    <script type="text/javascript" src="../Common/initShaders2.js"></script>
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="rectangulation.js"></script>
+</head>
+
+<body onload="main()">
+    <div id="canvas-container">
+        <canvas id="gl-canvas" width="512" height="512">
+            browser doesn't support the HTML5 canvas element
+        </canvas>
+
+        <div class="button-row" id="button-container-2"></div>
+        <div class="button-row" id="button-container-1"></div>  
+        <div class="button-row" id="button-container-3"></div>
+        <div class="button-row" id="undo button"><button id="undo">Undo</button></div>
+    </div>
+</body>
+</html>
