@@ -2,6 +2,51 @@ var gl;
 var points;
 var previousRect;
 
+// uses web-gl gl.readPixels and works as expected
+function takeScreenshot() {
+    const targetElement = document.getElementById('gl-canvas');
+    
+    // Get the WebGL rendering context
+    const gl = targetElement.getContext('webgl');
+
+    if (!gl) {
+        console.error('Unable to get WebGL context');
+        return;
+    }
+
+    // Create an array to store pixel data
+    const pixels = new Uint8Array(targetElement.width * targetElement.height * 4); // 4 channels (RGBA)
+
+    // Read pixels from the framebuffer
+    gl.readPixels(0, 0, targetElement.width, targetElement.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+    // Create a temporary canvas and context
+    const tempCanvas = document.createElement('canvas');
+    const tempContext = tempCanvas.getContext('2d');
+
+    // Set the dimensions of the temporary canvas
+    tempCanvas.width = targetElement.width;
+    tempCanvas.height = targetElement.height;    
+
+    // Create an ImageData object from the pixel data
+    const imageData = new ImageData(new Uint8ClampedArray(pixels), targetElement.width, targetElement.height);
+
+    // Put the ImageData onto the temporary canvas
+    tempContext.putImageData(imageData, 0, 0);
+
+    // flip in y-axis as gl.readPixels treats bottom-left as (0,0) instead of top-left like the rest of webgl
+    tempContext.translate(0, tempCanvas.height);
+    tempContext.scale(1, -1);
+    tempContext.drawImage(tempCanvas, 0, 0);
+
+    // Convert the temporary canvas to a data URL and trigger a download
+    const dataUrl = tempCanvas.toDataURL('image/jpeg');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'screenshot.jpg';
+    link.click();
+}
+
 function main() {
     var canvas = document.getElementById("gl-canvas");
 
